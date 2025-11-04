@@ -59,16 +59,39 @@ GET /deviceip
 - 服务器会尝试从多个来源获取真实IP（支持代理场景）
 - 本地访问时可能显示 `::1` 或 `127.0.0.1`（IPv6/IPv4 本地回环地址）
 
-## 部署到Railway
+## Railway 部署
 
-详细的部署指南请查看 [`DEPLOYMENT.md`](DEPLOYMENT.md)
+### 非交互式 CLI 部署
 
-**推荐方案（无需升级Node.js）：**
-1. 将代码推送到GitHub
-2. 在Railway.app连接GitHub仓库
-3. 自动部署完成
+**前置要求：**
+- Node.js 16+ 版本
+- Railway CLI
 
-您的Railway Token已配置：`3bb63ba7-9c2e-40f2-a539-0ff11fc64f8a`
+**部署命令：**
+
+```bash
+# 1. 安装 Railway CLI（首次使用）
+npm install -g @railway/cli
+
+# 2. 登录 Railway（首次使用）
+railway login
+
+# 3. 一键部署（所有命令可以连续执行）
+railway init --name deviceip-server && \
+railway up --detach && \
+railway service deviceip-server && \
+railway domain
+```
+
+**说明：**
+- `railway init --name deviceip-server` - 创建项目（可自定义项目名）
+- `railway up --detach` - 上传代码并后台部署
+- `railway service deviceip-server` - 链接到服务
+- `railway domain` - 生成公开域名
+
+**部署完成后：**
+- 访问生成的域名 `https://xxx.up.railway.app/deviceip` 测试 API
+- 预期返回：`{"ip":"你的IP地址","timestamp":"2025-11-03T14:22:24.614Z"}`
 
 ## 许可证
 
